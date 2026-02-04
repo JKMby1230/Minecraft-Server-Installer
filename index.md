@@ -8,7 +8,8 @@ layout: default
 
 歡迎使用 **Minecraft Server Installer**！這是一個專為玩家設計的免費開源工具，讓你在 3 分鐘內架設好 Fabric 或 Forge 伺服器。
 
-[👉 下載最新版本 (v0.0.1)]https://github.com/JKMby1230/Minecraft-Server-Installer/releases/download/v0.0.1/MinecraftServerInstaller.zip
+[👉 下載最新版本 (v0.0.1)]
+https://github.com/JKMby1230/Minecraft-Server-Installer/releases/download/v0.0.1/MinecraftServerInstaller.zip
 
 ---
 
