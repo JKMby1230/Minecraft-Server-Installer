@@ -63,12 +63,14 @@ layout: default
 <footer style="text-align: center; margin-top: 50px; font-size: 0.8em; color: gray;">
   © 2024 奶香威士忌. Powered by GitHub Pages.
 </footer>
+
 ---
+
 ### ☕ 支持開發者
 如果您覺得這個工具對您有幫助，歡迎請我喝杯咖啡，這將支持我繼續開發新功能！
 
 <div style="text-align: center; margin: 20px 0;">
-  <a href="https://www.buymeacoffee.com/你的帳號" target="_blank">
+  <a href="https://www.buymeacoffee.com/jkmby1230" target="_blank">
     <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" >
   </a>
 </div>
