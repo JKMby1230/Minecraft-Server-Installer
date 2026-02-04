@@ -196,7 +196,7 @@ class ServerInstallerApp:
 
     def open_donate(self):
         # 請把這裡改成你的連結
-        webbrowser.open("https://www.buymeacoffee.com/jkmby1230")
+        webbrowser.open("https://jkmby1230.github.io/Minecraft-Server-Installer/")
 
     # ... (其他方法如 scan_all_java_versions 等保持不變) ...
     # 以下省略重複代碼，請直接看到 setup_ui 的修改
