@@ -7,12 +7,7 @@ import subprocess
 import json
 import datetime
 import socket
-import re
-import glob
-import webbrowser # <--- 新增這個
 
-# ==========================================
-#              語言字典 (Translations)
 # ==========================================
 TRANSLATIONS = {
     "繁體中文": {
@@ -30,7 +25,6 @@ TRANSLATIONS = {
         "chk_wl": "啟用白名單限制", "lbl_wl_hint": "(未勾選則開放所有人)",
         "lbl_name": "軟體名稱:", "lbl_version": "版本:", "lbl_author": "發行:",
         "lbl_issue": "問題回報:", "btn_copy": "📋 複製", "lbl_lang": "語言 (Language):",
-        "btn_donate": "☕ 請作者喝咖啡 (贊助)", # 新增翻譯
         "msg_install_ok": "安裝成功！\n路徑: ", "msg_install_err": "安裝發生錯誤: ",
         "msg_copy": "已複製到剪貼簿", "status_init": "系統初始化...", "status_ver_ok": "版本列表讀取完成",
         "val_survival": "生存", "val_creative": "創造", "val_adventure": "冒險",
@@ -38,13 +32,33 @@ TRANSLATIONS = {
         "lbl_lan_ip": "🏠 區網 IP (同住家人連):", 
         "lbl_pub_ip": "🌏 公網 IP (給遠端朋友連):",
         "msg_ip_hint": "(遠端連線請配合路由器設定端口映射 Port Forwarding 25565)",
-        "err_neoforge_ver": "NeoForge 僅支援 Minecraft 1.20.1 (含) 以上版本。\n請改選 Forge 或 Fabric。",
-        "lbl_java_ver": "偵測到的 Java:",
-        "msg_java_scanning": "正在掃描 Java...",
-        "msg_java_found": "已找到 Java 版本: {}",
-        "err_java_missing": "❌ 嚴重錯誤：找不到適合的 Java 版本！\n\nMinecraft {} 需要 Java {}。\n\n請去下載安裝 Java {}。",
-        "msg_java_auto_bind": "✅ 已自動綁定 Java {} 路徑:\n{}",
-        "tutorial_text": """【Minecraft 伺服器架設教學】...""" # 略
+        # 教學內容
+        "tutorial_text": """【Minecraft 伺服器架設教學】
+
+步驟 1：安裝伺服器
+1. 在「📥 安裝部署」分頁，點擊「瀏覽」選擇一個空資料夾。
+2. 選擇「Fabric」或「Forge」核心，並選擇遊戲版本。
+3. 設定記憶體 (建議 4GB 以上) 並點擊「開始安裝」。
+
+步驟 2：啟動伺服器
+1. 安裝完成後，前往您選擇的資料夾。
+2. 找到並點擊兩下 「start.bat」 檔案。
+3. 等待黑色視窗跑完，出現 "Done!" 字樣即代表開啟成功。
+
+步驟 3：連線進入遊戲
+1. 本機連線 (你自己)：在多人遊戲輸入 「localhost」。
+2. 家人連線 (同一個 Wi-Fi)：輸入您的 「區網 IP」。
+3. 朋友連線 (不同網路)：輸入您的 「公網 IP」。
+   (可在「⚙️ 規則設定」分頁點擊「🔍 顯示 IP」查詢)
+
+⚠️ 重要：遠端連線 (朋友連不進來？)
+若朋友無法連線，您必須進入家裡的「路由器後台 (Wi-Fi 機)」。
+設定「端口映射 (Port Forwarding)」，將端口 25565 開放給您的區網 IP。
+
+步驟 4：管理員與權限
+1. 在「🛡️ 權限管理」分頁，輸入您的遊戲 ID 並加入「管理員 (OP)」。
+2. 重新安裝一次 (會自動更新 ops.json) 或重啟伺服器即可生效。
+"""
     },
     "English": {
         "tab1": " 📥 Install ", "tab2": " ⚙️ Settings ", "tab3": " 🛡️ Permissions ", "tab4": " ℹ️ About ", "tab5": " 📖 Tutorial ",
@@ -61,21 +75,32 @@ TRANSLATIONS = {
         "chk_wl": "Enable Whitelist", "lbl_wl_hint": "(Everyone can join if unchecked)",
         "lbl_name": "Software:", "lbl_version": "Version:", "lbl_author": "Author:",
         "lbl_issue": "Report Issue:", "btn_copy": "📋 Copy", "lbl_lang": "Language:",
-        "btn_donate": "☕ Buy me a coffee (Donate)", # 新增翻譯
-        "msg_install_ok": "Installation Complete!\nPath: ", "msg_install_err": "Error: ",
-        "msg_copy": "Copied to clipboard", "status_init": "Initializing...", "status_ver_ok": "Versions loaded",
-        "val_survival": "survival", "val_creative": "creative", "val_adventure": "adventure",
-        "val_peaceful": "peaceful", "val_easy": "easy", "val_normal": "normal", "val_hard": "hard",
-        "lbl_lan_ip": "🏠 LAN IP (Home Network):", 
-        "lbl_pub_ip": "🌏 Public IP (Internet):",
-        "msg_ip_hint": "(Requires Port Forwarding 25565 on your router for public access)",
-        "err_neoforge_ver": "NeoForge only supports Minecraft 1.20.1 or newer.\nPlease use Forge or Fabric instead.",
-        "lbl_java_ver": "Detected Java:",
-        "msg_java_scanning": "Scanning Java...",
-        "msg_java_found": "Found Java versions: {}",
-        "err_java_missing": "❌ Critical Error: Compatible Java not found!\n\nMinecraft {} requires Java {}.\n\nPlease install Java {}.",
-        "msg_java_auto_bind": "✅ Auto-bound Java {} path:\n{}",
-        "tutorial_text": "..."
+        "tutorial_text": """【Minecraft Server Tutorial】
+
+Step 1: Install Server
+1. In "📥 Install" tab, click "Browse" to select an empty folder.
+2. Choose "Fabric" or "Forge" and the game version.
+3. Set RAM (4GB+ recommended) and click "Start Installation".
+
+Step 2: Launch Server
+1. Go to the installation folder.
+2. Double-click "start.bat".
+3. Wait until the console says "Done!".
+
+Step 3: Join Game
+1. Local (You): Connect to "localhost".
+2. LAN (Family): Connect to your "LAN IP".
+3. Public (Friends): Connect to your "Public IP".
+   (Check IP in "⚙️ Settings" tab -> "🔍 Show IP")
+
+⚠️ Important: Public Connection Issues?
+If friends cannot join, you MUST configure "Port Forwarding" on your router.
+Open port 25565 for your LAN IP.
+
+Step 4: Permissions (OP)
+1. In "🛡️ Permissions" tab, enter your ID and add to "Operators (OP)".
+2. Re-install (updates ops.json) or restart the server.
+"""
     },
     "简体中文": {
         "tab1": " 📥 安装部署 ", "tab2": " ⚙️ 规则设定 ", "tab3": " 🛡️ 权限管理 ", "tab4": " ℹ️ 关于 ", "tab5": " 📖 教程 ",
@@ -83,7 +108,7 @@ TRANSLATIONS = {
         "lbl_core": "核心类型:", "lbl_ver": "游戏版本:", "lbl_ram": "内存 (Min/Max GB):",
         "btn_install": "开始安装服务器", "grp_log": "系统日志",
         "grp_game": " 游戏规则 ", "lbl_mode": "模式:", "lbl_diff": "难度:",
-        "chk_pvp": "PVP (玩家伤害)", "chk_cmd": "命令方块", "lbl_spawn": "出生点保护范围:",
+        "chk_pvp": "PVP (玩家傷害)", "chk_cmd": "命令方塊", "lbl_spawn": "出生点保护范围:",
         "grp_net": " 连线设定 ", "lbl_port": "Port (端口):", "lbl_max": "最大人数:",
         "chk_online": "正版验证 (Online Mode)", "lbl_motd": "MOTD (服务器描述):",
         "btn_ip": "🔍 显示 IP 连线信息",
@@ -92,21 +117,34 @@ TRANSLATIONS = {
         "chk_wl": "启用白名单限制", "lbl_wl_hint": "(未勾选则开放所有人)",
         "lbl_name": "软件名称:", "lbl_version": "版本:", "lbl_author": "发行:",
         "lbl_issue": "问题回报:", "btn_copy": "📋 复制", "lbl_lang": "语言 (Language):",
-        "btn_donate": "☕ 请作者喝咖啡 (赞助)", # 新增翻譯
-        "msg_install_ok": "安装成功！\n路径: ", "msg_install_err": "安装发生错误: ",
-        "msg_copy": "已复制到剪贴簿", "status_init": "系统初始化...", "status_ver_ok": "版本列表读取完成",
-        "val_survival": "生存", "val_creative": "创造", "val_adventure": "冒险",
-        "val_peaceful": "和平", "val_easy": "简单", "val_normal": "普通", "val_hard": "困难",
-        "lbl_lan_ip": "🏠 局域网 IP (同住家人连):", 
-        "lbl_pub_ip": "🌏 公网 IP (给远端朋友连):",
-        "msg_ip_hint": "(远端连线请配合路由器设定端口映射 Port Forwarding 25565)",
-        "err_neoforge_ver": "NeoForge 仅支持 Minecraft 1.20.1 (含) 以上版本。\n请改选 Forge 或 Fabric。",
-        "lbl_java_ver": "侦测到的 Java:",
-        "msg_java_scanning": "正在扫描 Java...",
-        "msg_java_found": "已找到 Java 版本: {}",
-        "err_java_missing": "❌ 严重错误：找不到适合的 Java 版本！\n\nMinecraft {} 需要 Java {}。\n\n请去下载安装 Java {}。",
-        "msg_java_auto_bind": "✅ 已自动绑定 Java {} 路径:\n{}",
-        "tutorial_text": "..."
+        "tutorial_text": """【Minecraft 服务器架设教程】
+
+步骤 1：安装服务器
+1. 在「📥 安装部署」分页，点击「浏览」选择一个空文件夹。
+2. 选择「Fabric」或「Forge」核心，并选择游戏版本。
+3. 设定内存 (建议 4GB 以上) 并点击「开始安装」。
+
+步骤 2：启动服务器
+1. 安装完成后，前往您选择的文件夹。
+2. 找到并双击 「start.bat」 文件。
+3. 等待黑色窗口跑完，出现 "Done!" 字样即代表开启成功。
+
+步骤 3：连线进入游戏
+1. 本机连线 (你自己)：在多人游戏输入 「localhost」。
+2. 家人连线 (同一个 Wi-Fi)：输入您的 「局域网 IP」。
+3. 朋友连线 (不同网络)：输入您的 「公网 IP」。
+   (可在「⚙️ 规则设定」分页点击「🔍 显示 IP」查询)
+
+⚠️ 重要：远端连线 (朋友连不进来？)
+若朋友无法连线，您必须进入家里的「路由器后台 (Wi-Fi 机)」。
+设定「端口映射 (Port Forwarding)」，将端口 25565 开放给您的局域网 IP。
+
+步骤 4：管理员与权限
+1. 在「🛡️ 权限管理」分页，输入您的游戏 ID 并加入「管理员 (OP)」。
+2. 重新安装一次 (会自动更新 ops.json) 或重启服务器即可生效。
+"""
+    }
+}
     }
 }
 
