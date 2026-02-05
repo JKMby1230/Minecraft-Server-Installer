@@ -134,33 +134,35 @@
             如果覺得好用，歡迎
             <a href="https://buymeacoffee.com/jkmby1230" target="_blank">☕ 請我喝杯咖啡</a>
         </p>
-        <p>© 2024 Minecraft Server Installer. Not affiliated with Mojang Studios.</p>
+        <p>&copy; <span id="year"></span> Minecraft Server Installer. Not affiliated with Mojang Studios.</p>
     </footer>
 
     <script>
+        // 1. 自動設定頁尾年份
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // 2. 自動抓取下載連結
         const repo = "JKMby1230/Minecraft-Server-Installer";
         const btn = document.getElementById('download-btn');
 
         fetch(`https://api.github.com/repos/${repo}/releases/latest`)
             .then(response => response.json())
             .then(data => {
-                console.log("GitHub API Data:", data); // 除錯用
+                console.log("GitHub API Data:", data);
 
-                // 優先找 zip，不分大小寫
+                // 優先找 .zip (不分大小寫)
                 let asset = data.assets.find(a => a.name.toLowerCase().endsWith('.zip'));
                 
-                // 找不到 zip，找 exe 當備案
+                // 找不到 .zip 就找 .exe
                 if (!asset) {
                     asset = data.assets.find(a => a.name.toLowerCase().endsWith('.exe'));
                 }
 
                 if (asset) {
-                    // 找到了檔案 (zip 或 exe)
                     btn.href = asset.browser_download_url;
                     btn.innerHTML = `📥 立即下載 ${data.tag_name} (${asset.name.split('.').pop()})`;
                     btn.classList.remove('btn-loading');
                 } else {
-                    // 真的什麼都沒有
                     btn.innerHTML = "📥 前往下載頁面 (檔案未找到)";
                     btn.classList.remove('btn-loading');
                 }
