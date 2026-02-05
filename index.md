@@ -1,76 +1,177 @@
----
-title: 首頁
-layout: default
----
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Server Installer - 你的開服神器</title>
+    <style>
+        :root {
+            --primary: #2ecc71;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --bg: #1a1a1a;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--light);
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 100px 20px;
+        }
+        h1 { font-size: 3.5rem; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        p.subtitle { font-size: 1.5rem; color: #bdc3c7; margin-top: 10px; }
+        
+        /* 下載按鈕樣式 */
+        .btn-download {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            margin-top: 30px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+            cursor: pointer;
+        }
+        .btn-download:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(46, 204, 113, 0.6);
+            background-color: #27ae60;
+        }
+        /* 讀取中的狀態 */
+        .btn-loading {
+            background-color: #7f8c8d;
+            pointer-events: none;
+            cursor: wait;
+        }
 
-# 🛠️ Minecraft Server Installer
-## 支援 NeoForge & Java 自動偵測的開服神器
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            text-align: left;
+        }
+        .feature-card {
+            background: #2d2d2d;
+            padding: 25px;
+            border-radius: 15px;
+            border-top: 4px solid var(--primary);
+        }
+        .feature-card h3 { color: var(--primary); margin-top: 0; }
 
-歡迎使用 **Minecraft Server Installer**！這是一個專為玩家設計的免費開源工具，讓你在 3 分鐘內架設好 Fabric、Forge 或 **NeoForge** 伺服器。
+        footer {
+            margin-top: 50px;
+            padding: 20px;
+            background-color: #111;
+            color: #7f8c8d;
+        }
+        a { color: var(--primary); text-decoration: none; }
+    </style>
+</head>
+<body>
 
-<div style="text-align: center; margin: 30px 0;">
-  <a href="https://github.com/JKMby1230/Minecraft-Server-Installer/releases/download/v0.0.2/MinecraftServerInstaller.zip" 
-     style="background-color: #2ea44f; color: white; padding: 15px 30px; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 1.2em;">
-     👉 立即下載 v0.0.2 (Windows)
-  </a>
-  <p style="margin-top: 10px; color: gray; font-size: 0.9em;">無需安裝 Python，解壓縮即可使用</p>
-</div>
+    <header>
+        <h1>Minecraft Server Installer</h1>
+        <p class="subtitle">專為懶人設計，一鍵架設 Fabric / Forge / NeoForge 伺服器</p>
+        
+        <a href="https://github.com/JKMby1230/Minecraft-Server-Installer/releases/latest" 
+           id="download-btn" 
+           class="btn-download btn-loading">
+            ⏳ 正在尋找最新版本...
+        </a>
+        
+        <br><br>
+        <span style="opacity: 0.8;">適用於 Windows 10/11 (免安裝 Python)</span>
+    </header>
 
----
+    <div class="container">
+        <h2 style="font-size: 2.5rem; margin-bottom: 40px;">為什麼選擇它？</h2>
+        
+        <div class="features">
+            <div class="feature-card">
+                <h3>⚡ 極速安裝</h3>
+                <p>忘記那些複雜的指令吧！只需點擊滑鼠，自動幫您下載核心、接受 EULA、並配置好所有檔案。</p>
+            </div>
+            <div class="feature-card">
+                <h3>☕ 智慧環境</h3>
+                <p>軟體會自動偵測並下載適合該版本的 Java (Portable)，不汙染您的系統環境。</p>
+            </div>
+            <div class="feature-card">
+                <h3>🌐 全能連線</h3>
+                <p>內建 IPv6 直連偵測與 Radmin VPN 虛擬 IP 抓取功能，無論何種網路環境，朋友都能連進來。</p>
+            </div>
+            <div class="feature-card">
+                <h3>🛡️ 防呆機制</h3>
+                <p>自動偵測系統記憶體，防止設定過高導致當機。內建雙模式教學，新手老手都適用。</p>
+            </div>
+        </div>
 
-### ☕ 支持開發者
-如果您覺得這個工具對您有幫助，歡迎請我喝杯咖啡，這將支持我繼續開發新功能！
+        <div style="margin-top: 60px; background: #333; padding: 20px; border-radius: 10px;">
+            <h3>🛠️ 專案開源</h3>
+            <p>本軟體完全免費且開源，程式碼公開透明。</p>
+            <p>
+                <a href="https://github.com/JKMby1230/Minecraft-Server-Installer">👉 前往 GitHub 查看原始碼</a>
+            </p>
+        </div>
+    </div>
 
-<div style="text-align: center; margin: 20px 0;">
-  <a href="https://www.buymeacoffee.com/jkmby1230" target="_blank">
-    <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" >
-  </a>
-</div>
+    <footer>
+        <p>Developed by <b>奶香威士忌 (JKMby1230)</b></p>
+        <p>
+            如果覺得好用，歡迎
+            <a href="https://buymeacoffee.com/jkmby1230" target="_blank">☕ 請我喝杯咖啡</a>
+        </p>
+        <p>© 2024 Minecraft Server Installer. Not affiliated with Mojang Studios.</p>
+    </footer>
 
----
+    <script>
+        const repo = "JKMby1230/Minecraft-Server-Installer"; 
+        const btn = document.getElementById('download-btn');
 
-### 🚀 v0.0.2 重大更新
-* **🆕 支援 NeoForge**：正式支援 1.20.1 以上的新世代模組核心。
-* **☕ 智慧 Java 偵測**：自動掃描電腦中的 Java 版本，若不符合需求會跳出警告。
-* **🔗 自動路徑綁定**：啟動檔 (`start.bat`) 現在會自動抓取正確的 Java 路徑，不再發生版本衝突。
+        fetch(`https://api.github.com/repos/${repo}/releases/latest`)
+            .then(response => response.json())
+            .then(data => {
+                // ⚠️ 修改處：這裡改為尋找 .zip 結尾的檔案
+                const asset = data.assets.find(a => a.name.endsWith('.zip'));
+                
+                if (asset) {
+                    btn.href = asset.browser_download_url;
+                    btn.innerHTML = `📥 立即下載 ${data.tag_name} (.zip)`;
+                    btn.classList.remove('btn-loading');
+                } else {
+                    // 如果找不到 zip，嘗試找 exe
+                    const exeAsset = data.assets.find(a => a.name.endsWith('.exe'));
+                    if (exeAsset) {
+                        btn.href = exeAsset.browser_download_url;
+                        btn.innerHTML = `📥 立即下載 ${data.tag_name} (.exe)`;
+                        btn.classList.remove('btn-loading');
+                    } else {
+                        // 真的都沒有，就回發布頁面
+                        btn.innerHTML = "📥 前往下載頁面";
+                        btn.classList.remove('btn-loading');
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching release:', error);
+                btn.innerHTML = "📥 前往下載頁面";
+                btn.classList.remove('btn-loading');
+            });
+    </script>
 
----
-
-### ✨ 軟體特色
-* **三核心支援**：Fabric / Forge / NeoForge 自動下載安裝。
-* **版本齊全**：支援最新 1.21+ 至 歷史版本 1.12.2。
-* **圖形化設定**：一鍵調整記憶體 (RAM)、Port、PVP、正版驗證。
-* **權限管理**：內建 OP 管理員、白名單新增功能 (自動查詢 UUID)。
-* **網路工具**：內建 IP 查詢功能，分辨 **區網 (LAN)** 與 **公網 (Public)** IP。
-
----
-
-### ☕ Java 版本需求 (重要)
-本軟體會自動偵測，但請確保您的電腦已安裝對應的 Java：
-
-| Minecraft 版本 | 需要的 Java 版本 |
-| :--- | :--- |
-| **1.20.5 - 1.21+** | **Java 21** |
-| **1.18 - 1.20.4** | **Java 17** |
-| **1.16.5 以下** | **Java 8** |
-
----
-
-### 📖 使用教學
-1.  **下載與解壓**：下載上方的 `.zip` 檔並解壓縮。
-2.  **執行軟體**：打開 `MinecraftServerInstaller.exe`。
-3.  **安裝設定**：
-    * 選擇安裝路徑 (空資料夾)。
-    * 選擇核心與版本。
-    * 點擊 **「開始安裝」**。
-4.  **啟動伺服器**：進入安裝好的資料夾，點擊 `start.bat` 即可開服！
-
----
-
-### 📬 問題回報
-如果有任何問題，歡迎來信：`marker0921230@gmail.com`
-或是到 [GitHub Issues](https://github.com/JKMby1230/Minecraft-Server-Installer/issues) 回報。
-
-<footer style="text-align: center; margin-top: 50px; font-size: 0.8em; color: gray;">
-  © 2024 奶香威士忌. Powered by GitHub Pages.
-</footer>
+</body>
+</html>
