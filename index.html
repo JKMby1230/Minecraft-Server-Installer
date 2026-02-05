@@ -71,4 +71,101 @@
             border-radius: 15px;
             border-top: 4px solid var(--primary);
         }
-        .feature-card h3 { color
+        .feature-card h3 { color: var(--primary); margin-top: 0; }
+
+        footer {
+            margin-top: 50px;
+            padding: 20px;
+            background-color: #111;
+            color: #7f8c8d;
+        }
+        a { color: var(--primary); text-decoration: none; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Minecraft Server Installer</h1>
+        <p class="subtitle">專為懶人設計，一鍵架設 Fabric / Forge / NeoForge 伺服器</p>
+        
+        <a href="https://github.com/JKMby1230/Minecraft-Server-Installer/releases/latest" 
+           id="download-btn" 
+           class="btn-download btn-loading">
+            ⏳ 正在尋找最新版本...
+        </a>
+        
+        <br><br>
+        <span style="opacity: 0.8;">適用於 Windows 10/11 (免安裝 Python)</span>
+    </header>
+
+    <div class="container">
+        <h2 style="font-size: 2.5rem; margin-bottom: 40px;">為什麼選擇它？</h2>
+        
+        <div class="features">
+            <div class="feature-card">
+                <h3>⚡ 極速安裝</h3>
+                <p>忘記那些複雜的指令吧！只需點擊滑鼠，自動幫您下載核心、接受 EULA、並配置好所有檔案。</p>
+            </div>
+            <div class="feature-card">
+                <h3>☕ 智慧環境</h3>
+                <p>軟體會自動偵測並下載適合該版本的 Java (Portable)，不汙染您的系統環境。</p>
+            </div>
+            <div class="feature-card">
+                <h3>🌐 全能連線</h3>
+                <p>內建 IPv6 直連偵測與 Radmin VPN 虛擬 IP 抓取功能，無論何種網路環境，朋友都能連進來。</p>
+            </div>
+            <div class="feature-card">
+                <h3>🛡️ 防呆機制</h3>
+                <p>自動偵測系統記憶體，防止設定過高導致當機。內建雙模式教學，新手老手都適用。</p>
+            </div>
+        </div>
+
+        <div style="margin-top: 60px; background: #333; padding: 20px; border-radius: 10px;">
+            <h3>🛠️ 專案開源</h3>
+            <p>本軟體完全免費且開源，程式碼公開透明。</p>
+            <p>
+                <a href="https://github.com/JKMby1230/Minecraft-Server-Installer">👉 前往 GitHub 查看原始碼</a>
+            </p>
+        </div>
+    </div>
+
+    <footer>
+        <p>Developed by <b>奶香威士忌 (JKMby1230)</b></p>
+        <p>
+            如果覺得好用，歡迎
+            <a href="https://buymeacoffee.com/jkmby1230" target="_blank">☕ 請我喝杯咖啡</a>
+        </p>
+        <p>© 2024 Minecraft Server Installer. Not affiliated with Mojang Studios.</p>
+    </footer>
+
+    <script>
+        const repo = "JKMby1230/Minecraft-Server-Installer"; // 您的專案名稱
+        const btn = document.getElementById('download-btn');
+
+        // 使用 GitHub API 獲取最新版本資訊
+        fetch(`https://api.github.com/repos/${repo}/releases/latest`)
+            .then(response => response.json())
+            .then(data => {
+                // 找到附檔名是 .exe 的檔案
+                const asset = data.assets.find(a => a.name.endsWith('.exe'));
+                
+                if (asset) {
+                    // 如果找到了，把按鈕連結換成直連下載網址
+                    btn.href = asset.browser_download_url;
+                    btn.innerHTML = `📥 立即下載 ${data.tag_name}`;
+                    btn.classList.remove('btn-loading'); // 移除讀取樣式
+                } else {
+                    // 沒找到 exe，維持跳轉到發布頁面
+                    btn.innerHTML = "📥 前往下載頁面";
+                    btn.classList.remove('btn-loading');
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching release:', error);
+                btn.innerHTML = "📥 前往下載頁面";
+                btn.classList.remove('btn-loading');
+            });
+    </script>
+
+</body>
+</html>
