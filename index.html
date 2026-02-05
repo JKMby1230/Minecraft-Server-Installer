@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Server Installer - 你的開服神器</title>
+    <style>
+        :root {
+            --primary: #2ecc71;
+            --dark: #2c3e50;
+            --light: #ecf0f1;
+            --bg: #1a1a1a;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--light);
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            padding: 100px 20px;
+        }
+        h1 { font-size: 3.5rem; margin: 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        p.subtitle { font-size: 1.5rem; color: #bdc3c7; margin-top: 10px; }
+        
+        .btn-download {
+            display: inline-block;
+            background-color: var(--primary);
+            color: white;
+            padding: 15px 40px;
+            font-size: 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            margin-top: 30px;
+            font-weight: bold;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(46, 204, 113, 0.4);
+        }
+        .btn-download:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(46, 204, 113, 0.6);
+            background-color: #27ae60;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            text-align: left;
+        }
+        .feature-card {
+            background: #2d2d2d;
+            padding: 25px;
+            border-radius: 15px;
+            border-top: 4px solid var(--primary);
+        }
+        .feature-card h3 { color: var(--primary); margin-top: 0; }
+
+        footer {
+            margin-top: 50px;
+            padding: 20px;
+            background-color: #111;
+            color: #7f8c8d;
+        }
+        a { color: var(--primary); text-decoration: none; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Minecraft Server Installer</h1>
+        <p class="subtitle">專為懶人設計，一鍵架設 Fabric / Forge / NeoForge 伺服器</p>
+        
+        <a href="https://github.com/JKMby1230/Minecraft-Server-Installer/releases/latest" class="btn-download">
+            📥 立即下載最新版
+        </a>
+        <br><br>
+        <span style="opacity: 0.8;">適用於 Windows 10/11 (免安裝 Python)</span>
+    </header>
+
+    <div class="container">
+        <h2 style="font-size: 2.5rem; margin-bottom: 40px;">為什麼選擇它？</h2>
+        
+        <div class="features">
+            <div class="feature-card">
+                <h3>⚡ 極速安裝</h3>
+                <p>忘記那些複雜的指令吧！只需點擊滑鼠，自動幫您下載核心、接受 EULA、並配置好所有檔案。</p>
+            </div>
+            <div class="feature-card">
+                <h3>☕ 智慧環境</h3>
+                <p>您的電腦沒裝 Java？沒問題！軟體會自動偵測並下載適合該版本的 Java (Portable)，不汙染您的系統。</p>
+            </div>
+            <div class="feature-card">
+                <h3>🌐 全能連線</h3>
+                <p>內建 IPv6 直連偵測與 Radmin VPN 虛擬 IP 抓取功能，無論何種網路環境，朋友都能連進來。</p>
+            </div>
+            <div class="feature-card">
+                <h3>🛡️ 防呆機制</h3>
+                <p>自動偵測系統記憶體，防止設定過高導致當機。內建雙模式教學，新手老手都適用。</p>
+            </div>
+        </div>
+
+        <div style="margin-top: 60px; background: #333; padding: 20px; border-radius: 10px;">
+            <h3>🛠️ 專案開源</h3>
+            <p>本軟體完全免費且開源，程式碼公開透明。</p>
+            <p>
+                <a href="https://github.com/JKMby1230/Minecraft-Server-Installer">👉 前往 GitHub 查看原始碼</a>
+            </p>
+        </div>
+    </div>
+
+    <footer>
+        <p>Developed by <b>奶香威士忌 (JKMby1230)</b></p>
+        <p>
+            如果覺得好用，歡迎
+            <a href="https://buymeacoffee.com/jkmby1230" target="_blank">☕ 請我喝杯咖啡</a>
+        </p>
+        <p>© 2024 Minecraft Server Installer. Not affiliated with Mojang Studios.</p>
+    </footer>
+
+</body>
+</html>
