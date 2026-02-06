@@ -1,9 +1,6 @@
 # 🛠️ Minecraft Server Installer (MCS Installer)
 > 一鍵架設 Minecraft 伺服器！支援 Fabric/Forge、多國語言、權限管理。
 
-![軟體截圖](https://你的截圖圖片網址.png) 
-*(這裡建議你截一張軟體運作的圖，上傳到 GitHub Issues 或 Imgur，然後把連結貼過來)*
-
 ## 🌟 軟體特色
 這款工具是為了讓開服變得更簡單而開發的 Python 應用程式：
 - **雙核心支援**：自動下載最新版 Fabric 或 Forge。
@@ -13,7 +10,7 @@
 - **多國語言**：繁體中文 / English / 簡體中文。
 
 ## 📥 下載與安裝
-前往 **[Releases 頁面](這裡貼上你剛剛第二階段的Releases網址)** 下載最新的 `.exe` 檔案。
+前往 **https://github.com/JKMby1230/Minecraft-Server-Installer/releases/tag/v0.0.18** 下載最新的 `.exe` 檔案。
 
 **使用方法：**
 1. 下載後直接執行 `.exe` (無需安裝 Python)。
