@@ -19,7 +19,7 @@ import sys
 # ==========================================
 #              設定與常數
 # ==========================================
-CURRENT_VERSION = "v0.0.18"
+CURRENT_VERSION = "v0.0.20"
 GITHUB_REPO = "JKMby1230/Minecraft-Server-Installer"
 HEADERS = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'}
 
@@ -55,6 +55,7 @@ TRANSLATIONS = {
         "chk_offline": "🔓 開放盜版/離線登入 (Cracked)",
         "lbl_motd": "MOTD (伺服器描述):",
         "btn_ip": "🔍 顯示 IP (含 IPv6)",
+        "btn_fix_fw": "🔥 一鍵修復防火牆 (允許 Port)",
         "grp_op": " 👑 管理員 (OP) ", "grp_ban": " ⛔ 黑名單 (Ban) ", "grp_wl": " 🔒 白名單 ",
         "btn_add": "+", "btn_remove": "移除選取",
         "chk_wl": "啟用白名單限制", "lbl_wl_hint": "(未勾選則開放所有人)",
@@ -81,6 +82,8 @@ TRANSLATIONS = {
         "msg_new_version": "發現新版本 {}！\n(目前版本: {})\n\n是否前往下載？",
         "warn_ram": "⚠️ 警告：您設定的記憶體 ({}GB) 超過了電腦可用的一半。\n這可能會導致電腦卡頓，確定要繼續嗎？",
         "err_no_path": "請先設定安裝路徑！",
+        "msg_fw_ok": "✅ 防火牆規則已新增！\n已強制允許 Port {} 通過。\n請朋友再試著連線看看。",
+        "msg_fw_err": "❌ 無法新增規則。\n請確保您在跳出的視窗按了「是」(以管理員身分執行)。",
         "quick_text": "...", "tutorial_text": "..."
     },
     "English": {
@@ -100,6 +103,7 @@ TRANSLATIONS = {
         "chk_offline": "Allow Cracked/Offline Mode",
         "lbl_motd": "MOTD:",
         "btn_ip": "🔍 Show IPs",
+        "btn_fix_fw": "🔥 Fix Firewall (Allow Port)",
         "grp_op": " Operators ", "grp_ban": " Banned ", "grp_wl": " Whitelist ",
         "btn_add": "Add", "btn_remove": "Remove",
         "chk_wl": "Enable Whitelist", "lbl_wl_hint": "(Open to all if unchecked)",
@@ -123,6 +127,8 @@ TRANSLATIONS = {
         "msg_new_version": "New version {} available!\n(Current: {})\n\nDownload now?",
         "warn_ram": "⚠️ Warning: {}GB RAM is more than half of your system RAM.",
         "err_no_path": "Please set Install Path first!",
+        "msg_fw_ok": "✅ Firewall Rule Added!\nPort {} is now allowed.",
+        "msg_fw_err": "❌ Failed. Please accept the UAC prompt (Run as Admin).",
         "quick_text": "...", "tutorial_text": "..."
     },
     "简体中文": {
@@ -142,6 +148,7 @@ TRANSLATIONS = {
         "chk_offline": "🔓 开放盗版/离线登录 (Cracked)",
         "lbl_motd": "MOTD (服务器描述):",
         "btn_ip": "🔍 显示 IP (含复制功能)",
+        "btn_fix_fw": "🔥 一键修复防火墙 (允许 Port)",
         "grp_op": " 👑 管理员 (OP) ", "grp_ban": " ⛔ 黑名单 (Ban) ", "grp_wl": " 🔒 白名单 ",
         "btn_add": "+", "btn_remove": "移除选中",
         "chk_wl": "启用白名单限制", "lbl_wl_hint": "(未勾选则开放所有人)",
@@ -168,6 +175,8 @@ TRANSLATIONS = {
         "msg_new_version": "发现新版本 {}！\n(目前版本: {})\n\n是否前往下载？",
         "warn_ram": "⚠️ 警告：您设定的内存 ({}GB) 超过了电脑可用的一半。\n这可能会导致电脑卡顿，确定要继续吗？",
         "err_no_path": "请先设定安装路径！",
+        "msg_fw_ok": "✅ 防火墙规则已新增！\n已允许 Port {} 通过。\n请朋友再试著连线看看。",
+        "msg_fw_err": "❌ 无法新增规则。\n请确保您在跳出的视窗按了「是」(以管理员身分执行)。",
         "quick_text": "...", "tutorial_text": "..."
     }
 }
@@ -250,6 +259,11 @@ class ServerInstallerApp:
 1. 雙方安裝 Radmin VPN 並加入同個網路。
 2. 複製本軟體顯示的「🔗 Radmin VPN」IP。
 3. 朋友輸入該 IP 即可連線。
+
+=== 🚑 常見問題 ===
+Q: 朋友連不進來，顯示連線拒絕？
+A: 通常是被 Windows 防火牆擋住。
+   請到「⚙️ 規則設定」分頁，點擊「🔥 一鍵修復防火牆」按鈕即可解決。
 """
         if key == "quick_text":
             return """【 5 步驟快速開服 】
@@ -258,7 +272,9 @@ class ServerInstallerApp:
 2. 選版本：選擇 Fabric/Forge 與遊戲版本。
 3. 按安裝：點擊「開始安裝伺服器」並等待完成。
 4. 啟動它：點擊「📂 打開伺服器資料夾」，執行「start.bat」。
-5. 給 IP：點擊軟體上的「🔍 顯示 IP」，複製 IPv6 或 Radmin IP 給朋友。"""
+5. 給 IP：點擊軟體上的「🔍 顯示 IP」，複製 IPv6 或 Radmin IP 給朋友。
+
+⚠️ 朋友連不上？請點「⚙️ 規則設定」的「🔥 一鍵修復防火牆」。"""
         
         return TRANSLATIONS[self.current_lang].get(key, key)
 
@@ -302,6 +318,8 @@ class ServerInstallerApp:
         self.chk_offline_w.config(text=self.get_text("chk_offline")) 
         self.lbl_motd.config(text=self.get_text("lbl_motd"))
         self.btn_ip.config(text=self.get_text("btn_ip"))
+        self.btn_fix_fw.config(text=self.get_text("btn_fix_fw")) # 更新
+
         self.cb_mode['values'] = [self.get_text("val_survival"), self.get_text("val_creative"), self.get_text("val_adventure")]
         self.cb_diff['values'] = [self.get_text("val_peaceful"), self.get_text("val_easy"), self.get_text("val_normal"), self.get_text("val_hard")]
         self.gb_op.config(text=self.get_text("grp_op"))
@@ -584,6 +602,23 @@ class ServerInstallerApp:
             ])
         threading.Thread(target=fetch_data, daemon=True).start()
 
+    def fix_firewall(self):
+        port = self.ent_port.get()
+        if not port.isdigit(): return
+        
+        # 指令：netsh advfirewall firewall add rule name="Minecraft Server" dir=in action=allow protocol=TCP localport=25565
+        cmd = f'advfirewall firewall add rule name="Minecraft Server Port {port}" dir=in action=allow protocol=TCP localport={port}'
+        
+        # 使用 ShellExecute 呼叫 UAC 提權
+        try:
+            ret = ctypes.windll.shell32.ShellExecuteW(None, "runas", "netsh", cmd, None, 1)
+            if ret > 32: # 成功執行
+                messagebox.showinfo("OK", self.get_text("msg_fw_ok").format(port))
+            else:
+                messagebox.showerror("Error", self.get_text("msg_fw_err"))
+        except Exception as e:
+            messagebox.showerror("Error", str(e))
+
     def add_user(self, entry, listbox, target_list, mode):
         name = entry.get().strip()
         if not name: return
@@ -636,15 +671,27 @@ class ServerInstallerApp:
 
     def start_install(self):
         path = self.ent_path.get()
-        if not path: messagebox.showwarning("Warning", "Check Path"); return
+        if not path:
+            messagebox.showwarning("Warning", self.get_text("err_no_path")); return
+        
+        try:
+            max_ram = int(self.ent_max.get())
+            if max_ram > self.system_ram_gb * 0.5:
+                if not messagebox.askyesno("Warning", self.get_text("warn_ram").format(max_ram)):
+                    return
+        except: pass
+
         mc_ver = self.combo_ver.get()
+        online_mode = not self.var_offline.get() 
+
         s = {
             'loader': self.var_load.get(), 'version': mc_ver, 'path': path,
             'ram_min': self.ent_min.get(), 'ram_max': self.ent_max.get(),
-            'port': self.ent_port.get(), 'max': self.ent_max_p.get(), 'online': self.var_online.get(),
+            'port': self.ent_port.get(), 'max': self.ent_max_p.get(), 
+            'online': online_mode,
             'mode': self.cb_mode.get(), 'diff': self.cb_diff.get(), 'pvp': self.var_pvp.get(),
             'cmd': self.var_cmd.get(), 'spawn': self.ent_spawn.get(), 'motd': self.ent_motd.get(),
-            'seed': self.ent_seed.get(), # 新增
+            'seed': self.ent_seed.get(), 
             'wl': self.var_wl.get()
         }
         if not s['ram_min'].isdigit() or not s['ram_max'].isdigit():
@@ -759,7 +806,7 @@ enforce-whitelist={str(s['wl']).lower()}
         name = "fabric-installer.jar"
         url = "https://maven.fabricmc.net/net/fabricmc/fabric-installer/1.0.0/fabric-installer-1.0.0.jar"
         self.log("Download Fabric...")
-        with open(name, 'wb') as f: f.write(requests.get(url).content)
+        with open(name, 'wb') as f: f.write(requests.get(url, headers=HEADERS).content)
         self.log(f"Install Fabric {v}...")
         cmd = ["java", "-jar", name, "server", "-mcversion", v, "-downloadMinecraft"]
         if self.run_cmd_realtime(cmd) != 0: raise Exception("Fabric Install Failed")
@@ -772,7 +819,7 @@ enforce-whitelist={str(s['wl']).lower()}
         full = f"{v}-{build}"; name = f"forge-{full}-installer.jar"
         url = f"https://maven.minecraftforge.net/net/minecraftforge/forge/{full}/{name}"
         self.log(f"Download Forge ({build})...")
-        r = requests.get(url)
+        r = requests.get(url, headers=HEADERS)
         if r.status_code != 200: raise Exception("Forge Download Failed")
         with open(name, 'wb') as f: f.write(r.content)
         self.log("Install Forge...")
@@ -787,7 +834,7 @@ enforce-whitelist={str(s['wl']).lower()}
         name = f"neoforge-{nf_version}-installer.jar"
         url = f"https://maven.neoforged.net/releases/net/neoforged/neoforge/{nf_version}/{name}"
         self.log(f"Download NeoForge ({nf_version})...")
-        r = requests.get(url)
+        r = requests.get(url, headers=HEADERS)
         if r.status_code != 200: raise Exception("NeoForge Download Failed")
         with open(name, 'wb') as f: f.write(r.content)
         self.log("Install NeoForge...")
@@ -795,26 +842,28 @@ enforce-whitelist={str(s['wl']).lower()}
         if os.path.exists(name): os.remove(name)
         if os.path.exists(name+".log"): os.remove(name+".log")
 
-    def gen_bat(self, loader, min_r, max_r, java_path):
-        txt = ""
-        clean_java_path = java_path.replace('"', '')
-        if os.path.exists("run.bat") or os.path.exists("run.sh"):
-            with open("user_jvm_args.txt", "w") as f: f.write(f"-Xms{min_r}G\n-Xmx{max_r}G\n")
-            txt = f'@echo off\nset PATH={os.path.dirname(clean_java_path)};%PATH%\ncall run.bat\npause'
-        else:
-            jar = "server.jar"
-            for f in os.listdir("."):
-                if f.startswith("forge") and f.endswith(".jar") and "installer" not in f: jar = f; break
-                if f == "fabric-server-launch.jar": jar = f; break
-            txt = f'@echo off\n{java_path} -Xms{min_r}G -Xmx{max_r}G -jar {jar} nogui\npause'
-        with open("start.bat", "w") as f: f.write(txt)
-
     def select_dir(self):
         d = filedialog.askdirectory()
         if d: self.ent_path.delete(0, tk.END); self.ent_path.insert(0, d)
 
     def open_donate(self):
-        webbrowser.open("https://www.buymeacoffee.com/marker0921230")
+        webbrowser.open("https://buymeacoffee.com/jkmby1230")
+
+    def open_server_dir(self):
+        path = self.ent_path.get()
+        if path and os.path.isdir(path):
+            os.startfile(path)
+        else:
+            messagebox.showwarning("Warning", self.get_text("err_no_path"))
+
+    def open_mods_dir(self):
+        path = self.ent_path.get()
+        if path and os.path.isdir(path):
+            mods = os.path.join(path, "mods")
+            if not os.path.exists(mods): os.makedirs(mods)
+            os.startfile(mods)
+        else:
+            messagebox.showwarning("Warning", self.get_text("err_no_path"))
 
     def setup_ui(self):
         self.root.title(f"MinecraftServerInstaller {CURRENT_VERSION}")
@@ -850,6 +899,11 @@ enforce-whitelist={str(s['wl']).lower()}
         self.ent_min = ttk.Entry(r2, width=3); self.ent_min.insert(0,"2"); self.ent_min.pack(side=tk.LEFT, padx=2)
         ttk.Label(r2, text="/").pack(side=tk.LEFT)
         self.ent_max = ttk.Entry(r2, width=3); self.ent_max.insert(0,"4"); self.ent_max.pack(side=tk.LEFT, padx=2)
+        
+        self.lf_sc = ttk.LabelFrame(self.t1, text=""); self.lf_sc.pack(padx=10, pady=5, fill="x")
+        self.btn_open_dir = ttk.Button(self.lf_sc, text="", command=self.open_server_dir); self.btn_open_dir.pack(side=tk.LEFT, padx=10, pady=5)
+        self.btn_open_mods = ttk.Button(self.lf_sc, text="", command=self.open_mods_dir); self.btn_open_mods.pack(side=tk.LEFT, padx=10, pady=5)
+
         self.btn_run = ttk.Button(self.t1, text="", command=self.start_install); self.btn_run.pack(pady=5, ipadx=20, ipady=5)
         self.prog = ttk.Progressbar(self.t1, mode="determinate"); self.prog.pack(fill="x", padx=20)
         self.lf_log = ttk.LabelFrame(self.t1, text=""); self.lf_log.pack(fill="both", expand=True, padx=10, pady=5)
@@ -869,17 +923,21 @@ enforce-whitelist={str(s['wl']).lower()}
         self.chk_cmd_w = ttk.Checkbutton(row_b, variable=self.var_cmd); self.chk_cmd_w.pack(side=tk.LEFT, padx=10)
         self.lbl_spawn = ttk.Label(row_b, text=""); self.lbl_spawn.pack(side=tk.LEFT, padx=10)
         self.ent_spawn = ttk.Entry(row_b, width=3); self.ent_spawn.insert(0,"16"); self.ent_spawn.pack(side=tk.LEFT)
+        row_s = ttk.Frame(self.f2); row_s.pack(fill="x", pady=5)
+        self.lbl_seed = ttk.Label(row_s, text=""); self.lbl_seed.pack(side=tk.LEFT)
+        self.ent_seed = ttk.Entry(row_s); self.ent_seed.pack(side=tk.LEFT, fill="x", expand=True, padx=5)
         self.f3 = ttk.LabelFrame(self.t2, text=""); self.f3.pack(padx=10, pady=10, fill="x")
         row_n = ttk.Frame(self.f3); row_n.pack(fill="x", pady=5)
         self.lbl_port = ttk.Label(row_n, text=""); self.lbl_port.pack(side=tk.LEFT)
         self.ent_port = ttk.Entry(row_n, width=6); self.ent_port.insert(0,"25565"); self.ent_port.pack(side=tk.LEFT)
         self.lbl_max = ttk.Label(row_n, text=""); self.lbl_max.pack(side=tk.LEFT, padx=5)
         self.ent_max_p = ttk.Entry(row_n, width=4); self.ent_max_p.insert(0,"20"); self.ent_max_p.pack(side=tk.LEFT)
-        self.var_online = tk.BooleanVar(value=True)
-        self.chk_online_w = ttk.Checkbutton(row_n, variable=self.var_online); self.chk_online_w.pack(side=tk.LEFT, padx=10)
+        self.var_offline = tk.BooleanVar(value=True) 
+        self.chk_offline_w = ttk.Checkbutton(row_n, variable=self.var_offline); self.chk_offline_w.pack(side=tk.LEFT, padx=10)
         self.lbl_motd = ttk.Label(self.f3, text=""); self.lbl_motd.pack(anchor='w', padx=5)
         self.ent_motd = ttk.Entry(self.f3); self.ent_motd.insert(0,"My Custom Server"); self.ent_motd.pack(fill="x", padx=5, pady=(0,5))
         self.btn_ip = ttk.Button(self.f3, text="", command=self.show_network_info); self.btn_ip.pack(pady=10)
+        self.btn_fix_fw = ttk.Button(self.f3, text="", command=self.fix_firewall); self.btn_fix_fw.pack(pady=5) # 防火牆按鈕
 
         # Tab 3
         paned = ttk.PanedWindow(self.t3, orient=tk.HORIZONTAL)
@@ -931,8 +989,12 @@ enforce-whitelist={str(s['wl']).lower()}
         self.combo_lang.current(0)
         self.combo_lang.pack(side=tk.LEFT, padx=5)
         self.combo_lang.bind("<<ComboboxSelected>>", self.change_language)
+        
+        # 修正版權年份：動態抓取
+        current_year = datetime.datetime.now().year
+        ttk.Label(f_about, text=f"© {current_year} Minecraft Server Installer. Not affiliated with Mojang Studios.", foreground="gray").pack(side=tk.BOTTOM, pady=10)
 
-        # Tab 5 (Updated with Notebook)
+        # Tab 5
         self.nb_tut = ttk.Notebook(self.t5)
         self.nb_tut.pack(fill="both", expand=True, padx=10, pady=10)
         self.t5_quick = ttk.Frame(self.nb_tut)
